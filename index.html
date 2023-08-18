@@ -21,17 +21,17 @@
     <div class="modal">
 
       <div>
-        <p class="light-hint"><span class="light1" onclick="getHint(this)">💡</span><span class="light2" onclick="getHint(this)">💡</span><span class="light3" onclick="getHint(this)">💡</span></p>
+        <p class="light-hint"><span class="light1" onclick="getHint(this)" title="Choose a cell for this hint">💡</span><span class="light2" onclick="getHint(this)" title="Choose a cell for this hint">💡</span><span class="light3" onclick="getHint(this)" title="Choose a cell for this hint">💡</span></p>
       </div>
 
       <div class="more-feature">
 
         <div class="inline-div">
-          <button class="undo-click" onclick="getOneStepBack()" title="One step back">Undo</button>
+          <button class="undo-click" onclick="getOneStepBack()">Undo</button>
         </div>
 
         <div class="inline-div">
-          <button class="safe-click" onclick="getSafeCell()" title="A cell without a mine is revealed">Safe Click</button>
+          <button class="safe-click" onclick="getSafeCell()" title="A cell without a mine will be revealed">Safe Click</button>
           <p class="avail-click"><span class="safe-clicks-left">3</span> clicks available</p>
         </div>
 

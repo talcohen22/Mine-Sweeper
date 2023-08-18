@@ -129,7 +129,7 @@ function onCellClicked(elCell, i, j) { //Called when a cell is clicked //Mega hi
         }
     }
 
-    var boardCopy = deepCopy(gBoard)
+    var boardCopy = JSON.parse(JSON.stringify(gBoard));
     GgameHistory.push({ board: boardCopy, liveLeft: gLivesLeft, marked: gLevel.MINES })
 
     renderBoard(gBoard) //DOM
@@ -153,28 +153,11 @@ function onCellMarked(elCell) { // Called when a cell is rightclicked.  See how 
 
     changeInnerText('.left-mines', gLevel.MINES)
 
-    var boardCopy = deepCopy(gBoard)
+    var boardCopy = JSON.parse(JSON.stringify(gBoard));
     GgameHistory.push({ board: boardCopy, liveLeft: gLivesLeft, marked: gLevel.MINES })
 
     renderBoard(gBoard)
     checkGameOver()
-}
-
-
-function deepCopy(board) {
-    var boardCopy = []
-    for (var i = 0; i < board.length; i++) {
-        boardCopy[i] = []
-        for (var j = 0; j < board[0].length; j++) {
-            boardCopy[i][j] = {
-                minesAroundCount: board[i][j].minesAroundCount,
-                isShown: board[i][j].isShown,
-                isMine: board[i][j].isMine,
-                isMarked: board[i][j].isMarked
-            }
-        }
-    }
-    return boardCopy
 }
 
 
@@ -354,7 +337,7 @@ function updateScoresDisplay() {
 
     if (score === 0) str = gLevelName + ' best score: 00:00:000' //if nothing is stored
     else if (score <= storageScore) str = gLevelName + ' best score: ' + gMin + ':' + gSeconds + ':' + gThousandth //if better score
-    else str = gLevelName + ' best score: ' + new Date(storageScore).getMinutes() + parseInt((+storageScore) / 1000) + ':' + (+storageScore) % 1000 //if not better score- display the storage score
+    else str = gLevelName + ' best score: ' + String(new Date(+storageScore).getMinutes()).padStart(2, '0') + ':' + String(parseInt((+storageScore) / 1000)).padStart(2, '0') + ':' + String((+storageScore) % 1000).padStart(3, '0') //if not better score- display the storage score
 
     changeInnerText('.best-scores', str)
 }
@@ -369,7 +352,8 @@ function getOneStepBack() {
     var lastStep = GgameHistory[GgameHistory.length - 1]
     gLivesLeft = lastStep.liveLeft //MODEL
     gLevel.MINES = lastStep.marked
-    gBoard = lastStep.board
+    gBoard = JSON.parse(JSON.stringify(lastStep.board));
+    // gBoard = lastStep.board
     renderBoard(gBoard) //DOM
     changeInnerText('.live-left-num', gLivesLeft)
     changeInnerText('.left-mines', gLevel.MINES)
@@ -443,7 +427,7 @@ function getMegaHint(cellsClickedForMega) { ///////################
     var endCol = (col1 < col2) ? col2 : col1
 
     var openedCells = []
-    var boardWithHint = deepCopy(gBoard)
+    var boardWithHint = JSON.parse(JSON.stringify(gBoard));
     for (var i = startRow; i <= endRow; i++) {
         for (var j = startCol; j <= endCol; j++) {
             boardWithHint[i][j].isShown = true
@@ -488,7 +472,7 @@ function getHint(elLight) {
 
 
 function showHint(rowIdx, colIdx) {
-    var boardCopy = deepCopy(gBoard)
+    var boardCopy = JSON.parse(JSON.stringify(gBoard));
     var openedCells = []
     for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
         if (i < 0 || i >= boardCopy.length) continue;
@@ -513,4 +497,3 @@ function showHint(rowIdx, colIdx) {
         gIsHintMode = false
     }, 1500);
 }
-
